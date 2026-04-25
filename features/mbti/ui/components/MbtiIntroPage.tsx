@@ -53,6 +53,19 @@ export const MbtiIntroPage = () => {
 
       <div
         aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[42%]"
+      >
+        <div className="h-[60vh] w-[44vh] rounded-full bg-orange-300/80 blur-3xl" />
+      </div>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[42%]"
+      >
+        <div className="h-[42vh] w-[30vh] rounded-full bg-orange-200/65 blur-2xl" />
+      </div>
+
+      <div
+        aria-hidden
         className="pointer-events-none absolute inset-x-0 top-2 h-px bg-zinc-400/30"
       />
       <div
