@@ -27,11 +27,19 @@ const STAR_CLIP =
   "[clip-path:polygon(50%_0%,61%_35%,98%_35%,68%_57%,79%_91%,50%_70%,21%_91%,32%_57%,2%_35%,39%_35%)]";
 
 export const MbtiIntroPage = () => {
-  const { isIntroVisible, isAnswering, currentQuestion, onStartTest } =
-    useMbtiIntro();
+  const {
+    isIntroVisible,
+    isAnswering,
+    currentQuestion,
+    currentQuestionIndex,
+    totalQuestionCount,
+    onStartTest,
+    onSelectChoice,
+  } = useMbtiIntro();
 
-  const handleSelectChoice = (_choice: Choice) => {
-    // TODO: 다음 백로그에서 다음 문항으로 진행 처리
+  const handleSelectChoice = (choice: Choice) => {
+    if (!currentQuestion) return;
+    onSelectChoice(currentQuestion.id, choice.id);
   };
 
   if (!isIntroVisible && !isAnswering) {
@@ -124,16 +132,27 @@ export const MbtiIntroPage = () => {
       </div>
 
       <main className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-6 pb-6 sm:px-10">
-        {isAnswering && currentQuestion ? (
-          <div className="flex w-full max-w-xl flex-col items-center gap-4">
-            <span className="rounded-full bg-orange-400 px-4 py-1.5 text-xs font-bold text-white shadow-sm ring-2 ring-orange-200">
-              {currentQuestion.category}
-            </span>
-            <QuestionTemplate
-              question={currentQuestion}
-              onSelect={handleSelectChoice}
-            />
-          </div>
+        {isAnswering ? (
+          currentQuestion ? (
+            <div className="flex w-full max-w-xl flex-col items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="rounded-full bg-orange-400 px-4 py-1.5 text-xs font-bold text-white shadow-sm ring-2 ring-orange-200">
+                  {currentQuestion.category}
+                </span>
+                <span className="text-xs font-bold text-zinc-500">
+                  {currentQuestionIndex + 1} / {totalQuestionCount}
+                </span>
+              </div>
+              <QuestionTemplate
+                question={currentQuestion}
+                onSelect={handleSelectChoice}
+              />
+            </div>
+          ) : (
+            <div className="text-center text-2xl font-black text-zinc-900">
+              모든 문항에 응답했어요
+            </div>
+          )
         ) : (
           <HeroImage>
             <StartTestButton onStart={onStartTest} />
