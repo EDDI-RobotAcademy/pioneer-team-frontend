@@ -1,6 +1,7 @@
 import { atom } from "jotai";
 import { introAtom } from "@/features/mbti/application/atoms/introAtom";
 import { EMPATHY_QUESTIONS } from "@/features/mbti/domain/data/empathyQuestions";
+import type { Response } from "@/features/mbti/domain/model/response";
 
 export const isIntroVisibleAtom = atom(
   (get) => get(introAtom).status === "READY",
@@ -20,3 +21,10 @@ export const currentQuestionAtom = atom((get) => {
   if (index < 0 || index >= EMPATHY_QUESTIONS.length) return null;
   return EMPATHY_QUESTIONS[index];
 });
+
+export const responsesAtom = atom<readonly Response[]>((get) => {
+  const state = get(introAtom);
+  return state.status === "ANSWERING" ? state.responses : [];
+});
+
+export const totalQuestionCountAtom = atom(() => EMPATHY_QUESTIONS.length);
