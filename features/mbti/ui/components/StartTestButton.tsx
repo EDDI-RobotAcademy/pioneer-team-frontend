@@ -1,9 +1,9 @@
 type Props = {
   onStart: () => void;
-  isStarting: boolean;
+  isStarting?: boolean;
 };
 
-export const StartTestButton = ({ onStart, isStarting }: Props) => {
+export const StartTestButton = ({ onStart, isStarting = false }: Props) => {
   return (
     <button
       type="button"

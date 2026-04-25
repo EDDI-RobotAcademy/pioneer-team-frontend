@@ -7,7 +7,7 @@ type IntroCommandMap = {
 
 export const introCommand: IntroCommandMap = {
   ENTER_INTRO: () => ({ status: "READY" }),
-  START_TEST: () => ({ status: "STARTING" }),
+  START_TEST: () => ({ status: "ANSWERING", currentIndex: 0 }),
 };
 
 export const dispatchIntroIntent = (

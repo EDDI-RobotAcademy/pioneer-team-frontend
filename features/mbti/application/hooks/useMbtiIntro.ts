@@ -4,8 +4,9 @@ import { useAtom, useAtomValue } from "jotai";
 import { useCallback, useEffect } from "react";
 import { introAtom } from "@/features/mbti/application/atoms/introAtom";
 import {
+  currentQuestionAtom,
+  isAnsweringAtom,
   isIntroVisibleAtom,
-  isStartingTestAtom,
 } from "@/features/mbti/application/selectors/introSelectors";
 import { dispatchIntroIntent } from "@/features/mbti/application/commands/introCommand";
 import {
@@ -18,7 +19,8 @@ import { EMPATHY_TYPES } from "@/features/mbti/domain/model/empathyType";
 export const useMbtiIntro = () => {
   const [state, setState] = useAtom(introAtom);
   const isIntroVisible = useAtomValue(isIntroVisibleAtom);
-  const isStarting = useAtomValue(isStartingTestAtom);
+  const isAnswering = useAtomValue(isAnsweringAtom);
+  const currentQuestion = useAtomValue(currentQuestionAtom);
 
   useEffect(() => {
     setState((prev) => dispatchIntroIntent(prev, enterIntro()));
@@ -33,7 +35,8 @@ export const useMbtiIntro = () => {
     test: EMPATHY_MBTI_TEST,
     empathyTypes: EMPATHY_TYPES,
     isIntroVisible,
-    isStarting,
+    isAnswering,
+    currentQuestion,
     onStartTest,
   };
 };
