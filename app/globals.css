@@ -2,7 +2,7 @@
 
 :root {
   color-scheme: light;
-  --background: #FFF6E0;
+  --background: #FFF7F8;
   --foreground: #1a1108;
 }
 
@@ -15,7 +15,7 @@
 
 html,
 body {
-  background: #FFF6E0;
+  background: #FFF7F8;
   color: #1a1108;
 }
 
@@ -38,27 +38,27 @@ body {
   60%,
   100% {
     box-shadow:
-      0 0 28px rgba(251, 146, 60, 1),
-      0 0 56px rgba(251, 146, 60, 0.9),
-      0 0 100px rgba(251, 146, 60, 0.65),
-      0 0 160px rgba(251, 146, 60, 0.4);
+      0 0 28px rgba(245, 170, 175, 1),
+      0 0 56px rgba(245, 170, 175, 0.9),
+      0 0 100px rgba(245, 170, 175, 0.65),
+      0 0 160px rgba(245, 170, 175, 0.4);
   }
   62%,
   92% {
     box-shadow:
-      0 0 4px rgba(251, 146, 60, 0.18);
+      0 0 4px rgba(245, 170, 175, 0.18);
   }
   93%,
   95% {
     box-shadow:
-      0 0 28px rgba(251, 146, 60, 1),
-      0 0 56px rgba(251, 146, 60, 0.9),
-      0 0 100px rgba(251, 146, 60, 0.65),
-      0 0 160px rgba(251, 146, 60, 0.4);
+      0 0 28px rgba(245, 170, 175, 1),
+      0 0 56px rgba(245, 170, 175, 0.9),
+      0 0 100px rgba(245, 170, 175, 0.65),
+      0 0 160px rgba(245, 170, 175, 0.4);
   }
   96%,
   98% {
     box-shadow:
-      0 0 4px rgba(251, 146, 60, 0.18);
+      0 0 4px rgba(245, 170, 175, 0.18);
   }
 }

@@ -47,10 +47,10 @@ export const MbtiIntroPage = () => {
   }
 
   return (
-    <div className="relative flex h-screen flex-col overflow-hidden bg-amber-50">
+    <div className="relative flex h-screen flex-col overflow-hidden bg-[#FFF7F8]">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-40 [background-image:radial-gradient(circle,#fdba74_1.5px,transparent_1.5px)] [background-size:26px_26px]"
+        className="pointer-events-none absolute inset-0 opacity-100 [background-image:radial-gradient(circle,#FFEFF2_1.5px,transparent_1.5px)] [background-size:26px_26px]"
       />
 
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -61,7 +61,7 @@ export const MbtiIntroPage = () => {
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70"
+        className="pointer-events-none absolute inset-0 opacity-90"
       >
         <AmusementParkScene />
       </div>
@@ -70,13 +70,13 @@ export const MbtiIntroPage = () => {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[42%]"
       >
-        <div className="h-[60vh] w-[44vh] rounded-full bg-orange-300/80 blur-3xl" />
+        <div className="h-[60vh] w-[44vh] rounded-full bg-[#F5AAAF]/75 blur-3xl" />
       </div>
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[42%]"
       >
-        <div className="h-[42vh] w-[30vh] rounded-full bg-orange-200/65 blur-2xl" />
+        <div className="h-[42vh] w-[30vh] rounded-full bg-[#FCD8DA]/60 blur-2xl" />
       </div>
 
       <div
@@ -118,18 +118,6 @@ export const MbtiIntroPage = () => {
           오늘 뭐하고 놀까?
         </span>
       </header>
-
-      <div className="relative mx-auto flex w-full max-w-5xl shrink-0 justify-center px-6 py-2 sm:px-10">
-        <div className="relative">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-1/2 h-16 w-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#6667AB]/30 blur-3xl"
-          />
-          <h2 className="relative text-3xl font-black tracking-tight text-[#6667AB] sm:text-4xl">
-            무료 심리 테스트
-          </h2>
-        </div>
-      </div>
 
       <main className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-6 pb-6 sm:px-10">
         {isAnswering ? (
