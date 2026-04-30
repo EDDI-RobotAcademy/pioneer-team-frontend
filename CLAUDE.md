@@ -595,3 +595,20 @@ Claude가 이 프로젝트에서 작업할 때 반드시 지켜야 할 규칙
 4. API 호출은 Infrastructure Layer에서만 수행
 5. Feature 구조를 깨지 말 것
 6. Domain 타입을 중심으로 코드 작성
+
+---
+
+# Tracking Rules
+
+Tracking 관련 구현은 반드시 DATA_TRACKING.md를 따른다.
+
+Frontend는 다음 책임만 가진다:
+
+- Event 생성
+- Event 전송
+
+## MUST
+
+- 상태 전이 판단 금지
+- Journey 구성 금지
+- KPI 계산 금지
