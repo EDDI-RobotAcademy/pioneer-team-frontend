@@ -12,4 +12,5 @@ export type TrackingEvent = {
   content_id: string;
   timestamp: number;
   referral_id?: string;
+  metadata?: Record<string, unknown>;
 };

@@ -1,6 +1,10 @@
 import { httpClient } from "@/infrastructure/http/httpClient";
 import { env } from "@/infrastructure/config/env";
 import type { TrackingEvent } from "@/features/tracking/domain/model/trackingEvent";
+import {
+  enqueueEvent,
+  registerEventProcessor,
+} from "@/features/tracking/infrastructure/queue/eventQueue";
 
 const TRACKING_EVENT_PATH = "/events";
 
@@ -22,6 +26,12 @@ const tryBeacon = (event: TrackingEvent): boolean => {
   }
 };
 
+const directSend = async (event: TrackingEvent): Promise<void> => {
+  await httpClient.post(TRACKING_EVENT_PATH, event);
+};
+
+registerEventProcessor(directSend);
+
 export const sendTrackingEvent = (
   event: TrackingEvent,
   options?: SendOptions,
@@ -29,5 +39,7 @@ export const sendTrackingEvent = (
   if (options?.useBeacon && tryBeacon(event)) {
     return;
   }
-  void httpClient.post(TRACKING_EVENT_PATH, event);
+  directSend(event).catch(() => {
+    enqueueEvent(event);
+  });
 };
