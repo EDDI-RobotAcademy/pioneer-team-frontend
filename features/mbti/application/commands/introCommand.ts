@@ -1,5 +1,6 @@
 import type { IntroIntent } from "@/features/mbti/domain/intent/introIntent";
 import type { IntroState } from "@/features/mbti/domain/state/introState";
+import { EMPATHY_QUESTIONS } from "@/features/mbti/domain/data/empathyQuestions";
 
 type IntroCommandMap = {
   [K in IntroIntent["type"]]: (
@@ -17,13 +18,18 @@ export const introCommand: IntroCommandMap = {
   }),
   SELECT_CHOICE: (state, intent) => {
     if (state.status !== "ANSWERING") return state;
+    const responses = [
+      ...state.responses,
+      { questionId: intent.questionId, choiceId: intent.choiceId },
+    ];
+    const nextIndex = state.currentIndex + 1;
+    if (nextIndex >= EMPATHY_QUESTIONS.length) {
+      return { status: "COMPLETED", responses };
+    }
     return {
       status: "ANSWERING",
-      currentIndex: state.currentIndex + 1,
-      responses: [
-        ...state.responses,
-        { questionId: intent.questionId, choiceId: intent.choiceId },
-      ],
+      currentIndex: nextIndex,
+      responses,
     };
   },
 };
