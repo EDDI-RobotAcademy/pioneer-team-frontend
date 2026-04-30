@@ -7,6 +7,13 @@ import { StartTestButton } from "@/features/mbti/ui/components/StartTestButton";
 import { BrandLogo } from "@/ui/components/BrandLogo";
 import type { Choice } from "@/features/quiz/domain/model/question";
 import { QuestionTemplate } from "@/features/quiz/ui/components/QuestionTemplate";
+import { useLandTracking } from "@/features/tracking/application/hooks/useLandTracking";
+import { ImpressionTracker } from "@/features/tracking/ui/components/ImpressionTracker";
+import {
+  MBTI_INTRO_PAGE_CONTENT_ID,
+  MBTI_INTRO_HERO_CONTENT_ID,
+  mbtiQuestionContentId,
+} from "@/features/tracking/domain/contentId";
 
 const AmusementParkScene = dynamic(
   () =>
@@ -36,6 +43,8 @@ export const MbtiIntroPage = () => {
     onStartTest,
     onSelectChoice,
   } = useMbtiIntro();
+
+  useLandTracking({ contentId: MBTI_INTRO_PAGE_CONTENT_ID });
 
   const handleSelectChoice = (choice: Choice) => {
     if (!currentQuestion) return;
@@ -131,10 +140,15 @@ export const MbtiIntroPage = () => {
                   {currentQuestionIndex + 1} / {totalQuestionCount}
                 </span>
               </div>
-              <QuestionTemplate
-                question={currentQuestion}
-                onSelect={handleSelectChoice}
-              />
+              <ImpressionTracker
+                contentId={mbtiQuestionContentId(currentQuestion.id)}
+                className="w-full"
+              >
+                <QuestionTemplate
+                  question={currentQuestion}
+                  onSelect={handleSelectChoice}
+                />
+              </ImpressionTracker>
             </div>
           ) : (
             <div className="text-center text-2xl font-black text-zinc-900">
@@ -142,9 +156,11 @@ export const MbtiIntroPage = () => {
             </div>
           )
         ) : (
-          <HeroImage>
-            <StartTestButton onStart={onStartTest} />
-          </HeroImage>
+          <ImpressionTracker contentId={MBTI_INTRO_HERO_CONTENT_ID}>
+            <HeroImage>
+              <StartTestButton onStart={onStartTest} />
+            </HeroImage>
+          </ImpressionTracker>
         )}
       </main>
     </div>
