@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { JotaiProvider } from "@/ui/layout/JotaiProvider";
+import { QueueLifecycleProvider } from "@/features/tracking/ui/components/QueueLifecycleProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-[#FFF7F8] text-zinc-900 antialiased`}
       >
+        <QueueLifecycleProvider />
         <JotaiProvider>{children}</JotaiProvider>
       </body>
     </html>
