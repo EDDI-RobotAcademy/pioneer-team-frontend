@@ -96,3 +96,8 @@ export const enqueueEvent = (event: TrackingEvent): void => {
   persist();
   void drain();
 };
+
+export const triggerDrain = (): void => {
+  ensureInit();
+  void drain();
+};
