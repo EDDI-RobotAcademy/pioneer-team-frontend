@@ -2,7 +2,7 @@ import {
   validatePsychTest,
   type PsychTest,
 } from "@/features/test-core/domain/model/psychTest";
-import { CEO_QUESTIONS } from "@/features/playful-test/domain/data/questions/ceoQuestions";
+import { CEO_QUESTIONS } from "@/features/serious-test/domain/data/questions/ceoQuestions";
 
 export const CEO_TEST: PsychTest = {
   id: "ceo",
@@ -11,7 +11,8 @@ export const CEO_TEST: PsychTest = {
   description: "어떤 인물의 유형일까?",
   estimatedMinutes: 3,
   questions: CEO_QUESTIONS,
-  resultImageDir: "/images/ceo_type",
+  resultImageDir: "/images/serious/ceo",
+  thumbnailPath: "/images/ceo/ceo_type.png",
 };
 
 if (process.env.NODE_ENV !== "production") {
