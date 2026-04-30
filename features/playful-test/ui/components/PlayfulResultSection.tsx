@@ -1,0 +1,74 @@
+"use client";
+
+import { useAtomValue } from "jotai";
+import { resultAtom } from "@/features/test-core/application/atoms/resultAtom";
+import { PlayfulResultCard } from "@/features/playful-test/ui/components/PlayfulResultCard";
+import { PLAYFUL_TOKENS } from "@/features/playful-test/ui/tokens/playfulTokens";
+
+type Props = {
+  testContentId: string;
+  testTitle: string;
+  resultImageDir: string;
+};
+
+export const PlayfulResultSection = ({
+  testContentId,
+  testTitle,
+  resultImageDir,
+}: Props) => {
+  const result = useAtomValue(resultAtom);
+
+  if (result.status === "SUCCESS") {
+    return (
+      <PlayfulResultCard
+        testContentId={testContentId}
+        testTitle={testTitle}
+        resultImageDir={resultImageDir}
+        typeCode={result.typeCode}
+        description={result.description}
+      />
+    );
+  }
+
+  if (result.status === "FAILED") {
+    return (
+      <div className="flex w-full max-w-md flex-col items-center gap-3">
+        <div
+          role="alert"
+          className="w-full rounded-2xl bg-rose-50 px-4 py-3 text-center text-xs font-bold text-rose-600 ring-1 ring-rose-200"
+        >
+          결과를 불러오지 못했어요. 잠시 후 다시 시도해주세요.
+        </div>
+        <section
+          className="flex w-full flex-col items-center gap-5 rounded-3xl border-4 px-6 py-8 shadow-xl"
+          style={{
+            backgroundColor: PLAYFUL_TOKENS.resultBg,
+            borderColor: PLAYFUL_TOKENS.resultRing,
+          }}
+        >
+          <span
+            className="rounded-full px-3 py-1 text-xs font-bold text-white"
+            style={{ backgroundColor: PLAYFUL_TOKENS.resultAccent }}
+          >
+            {testTitle}
+          </span>
+          <h2
+            className="text-3xl font-black tracking-tight"
+            style={{ color: PLAYFUL_TOKENS.resultPrimary }}
+          >
+            —
+          </h2>
+          <p className="text-center text-sm font-medium leading-6 text-zinc-500">
+            결과를 표시할 수 없습니다.
+          </p>
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="text-center text-base font-bold text-zinc-700">
+      결과를 불러오는 중...
+    </div>
+  );
+};

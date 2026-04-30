@@ -1,5 +1,5 @@
-import { MbtiIntroPage } from "@/features/mbti/ui/components/MbtiIntroPage";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return <MbtiIntroPage />;
+export default function Page() {
+  redirect("/playful/ceo");
 }
