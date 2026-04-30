@@ -1,15 +1,15 @@
-const requiredEnvVars = [
+const REQUIRED_ENV_KEYS = [
   "NEXT_PUBLIC_API_BASE_URL",
   "NEXT_PUBLIC_GOOGLE_LOGIN_PATH",
   "NEXT_PUBLIC_KAKAO_LOGIN_PATH",
 ] as const;
 
-type EnvKey = (typeof requiredEnvVars)[number];
+type EnvKey = (typeof REQUIRED_ENV_KEYS)[number];
 
-function loadEnv(): Record<EnvKey, string> {
+function readEnv(): Record<EnvKey, string> {
   const missing: string[] = [];
 
-  const entries = requiredEnvVars.map((key) => {
+  const entries = REQUIRED_ENV_KEYS.map((key) => {
     const value = process.env[key];
     if (!value) {
       missing.push(key);
@@ -26,4 +26,10 @@ function loadEnv(): Record<EnvKey, string> {
   return Object.fromEntries(entries) as Record<EnvKey, string>;
 }
 
-export const env = loadEnv();
+const raw = readEnv();
+
+export const env = {
+  apiBaseUrl: raw.NEXT_PUBLIC_API_BASE_URL,
+  googleLoginPath: raw.NEXT_PUBLIC_GOOGLE_LOGIN_PATH,
+  kakaoLoginPath: raw.NEXT_PUBLIC_KAKAO_LOGIN_PATH,
+};
