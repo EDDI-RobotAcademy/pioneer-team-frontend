@@ -16,6 +16,8 @@ import {
   MBTI_INTRO_START_BUTTON_CONTENT_ID,
   mbtiQuestionContentId,
 } from "@/features/tracking/domain/contentId";
+import { MbtiResultSection } from "@/features/mbti/ui/components/MbtiResultSection";
+import { calcEmpathyType } from "@/features/mbti/domain/model/empathyResult";
 
 const AmusementParkScene = dynamic(
   () =>
@@ -42,6 +44,7 @@ export const MbtiIntroPage = () => {
     currentQuestion,
     currentQuestionIndex,
     totalQuestionCount,
+    responses,
     onStartTest,
     onSelectChoice,
   } = useMbtiIntro();
@@ -160,9 +163,7 @@ export const MbtiIntroPage = () => {
               </ImpressionTracker>
             </div>
           ) : (
-            <div className="text-center text-2xl font-black text-zinc-900">
-              모든 문항에 응답했어요
-            </div>
+            <MbtiResultSection empathyType={calcEmpathyType(responses)} />
           )
         ) : (
           <ImpressionTracker contentId={MBTI_INTRO_HERO_CONTENT_ID}>

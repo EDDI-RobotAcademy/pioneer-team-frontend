@@ -20,6 +20,15 @@ const commands: CommandMap = {
       { useBeacon: true },
     );
   },
+  TRACK_CONVERT: (intent) => {
+    sendTrackingEvent({
+      event_type: "CONVERT",
+      session_id: ensureSessionId(),
+      content_id: intent.contentId,
+      timestamp: Date.now(),
+      ...(intent.metadata ? { metadata: intent.metadata } : {}),
+    });
+  },
 };
 
 export const dispatchTracking = (intent: TrackingIntent): void => {
