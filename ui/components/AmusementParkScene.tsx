@@ -1,9 +1,19 @@
 "use client";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Fragment, useMemo, useRef } from "react";
+import { Fragment, useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 import type { Group } from "three";
+
+const enableShadowsOnGroup = (group: Group | null) => {
+  if (!group) return;
+  group.traverse((obj) => {
+    if (obj instanceof THREE.Mesh) {
+      obj.castShadow = true;
+      obj.receiveShadow = true;
+    }
+  });
+};
 
 const COLORS = [
   "#F87171",
@@ -365,6 +375,11 @@ const FerrisPillar = ({ z }: { z: number }) => {
 const FerrisWheel = () => {
   const wheelRef = useRef<Group>(null);
   const cabinRefs = useRef<(Group | null)[]>([]);
+  const sceneRef = useRef<Group>(null);
+
+  useEffect(() => {
+    enableShadowsOnGroup(sceneRef.current);
+  }, []);
 
   useFrame((_, delta) => {
     if (!wheelRef.current) return;
@@ -384,7 +399,7 @@ const FerrisWheel = () => {
   });
 
   return (
-    <group position={[-3.2, 1.2, -1]}>
+    <group ref={sceneRef} position={[-3.2, 1.2, -1]}>
       <FerrisPillar z={-FERRIS_PILLAR_Z} />
       <FerrisPillar z={FERRIS_PILLAR_Z} />
 
@@ -491,11 +506,7 @@ const CarouselHorse = ({
     <group position={[x, 0, z]} rotation={[0, Math.PI / 2 - angle, 0]}>
       <mesh position={[0, 0.225, 0]}>
         <cylinderGeometry args={[0.025, 0.025, 1.25, 12]} />
-        <meshStandardMaterial
-          color={POLE_COLOR}
-          metalness={0.6}
-          roughness={0.3}
-        />
+        <meshStandardMaterial color={POLE_COLOR} />
       </mesh>
 
       <mesh position={[0, 0.1, 0]}>
@@ -577,32 +588,28 @@ const CarouselHorse = ({
 
 const Carousel = () => {
   const ref = useRef<Group>(null);
+  const sceneRef = useRef<Group>(null);
   useFrame((_, delta) => {
     if (ref.current) ref.current.rotation.y += delta * 0.6;
   });
+  useEffect(() => {
+    enableShadowsOnGroup(sceneRef.current);
+  }, []);
   return (
-    <group position={[3.2, -1.4, -1]}>
+    <group ref={sceneRef} position={[3.2, -1.4, -1]}>
       <mesh position={[0, -0.5, 0]}>
         <cylinderGeometry args={[1.32, 1.36, 0.12, 32]} />
         <meshStandardMaterial color="#ffffff" />
       </mesh>
       <mesh position={[0, -0.42, 0]}>
         <cylinderGeometry args={[1.22, 1.22, 0.04, 32]} />
-        <meshStandardMaterial
-          color={ROOF_GOLD}
-          metalness={0.4}
-          roughness={0.4}
-        />
+        <meshStandardMaterial color={ROOF_GOLD} />
       </mesh>
 
       <group ref={ref}>
         <mesh position={[0, 0.3, 0]}>
           <cylinderGeometry args={[0.06, 0.06, 1.5, 16]} />
-          <meshStandardMaterial
-            color={POLE_COLOR}
-            metalness={0.6}
-            roughness={0.3}
-          />
+          <meshStandardMaterial color={POLE_COLOR} />
         </mesh>
 
         <mesh position={[0, 1.05, 0]}>
@@ -617,11 +624,7 @@ const Carousel = () => {
 
         <mesh position={[0, 1.72, 0]}>
           <sphereGeometry args={[0.09, 16, 16]} />
-          <meshStandardMaterial
-            color={POLE_COLOR}
-            metalness={0.7}
-            roughness={0.25}
-          />
+          <meshStandardMaterial color={POLE_COLOR} />
         </mesh>
 
         <mesh position={[0, 1.88, 0]}>
@@ -693,8 +696,8 @@ const Balloon = ({ x, color, speed, offset }: BalloonProps) => {
   );
 };
 
-const RAIL_COLOR = "#7C2D12";
-const TIE_COLOR = "#92400E";
+const RAIL_COLOR = "#FFFFFF";
+const TIE_COLOR = "#FFFFFF";
 
 const Z_BACK = -5;
 const TRACK_Y = 2.5;
@@ -867,7 +870,12 @@ const CartPassenger = () => (
 
 const RollerCoaster = () => {
   const carRef = useRef<Group>(null);
+  const sceneRef = useRef<Group>(null);
   const { leftRailGeom, rightRailGeom, sleepers } = useCoasterAssets();
+
+  useEffect(() => {
+    enableShadowsOnGroup(sceneRef.current);
+  }, []);
 
   useFrame((state) => {
     if (!carRef.current) return;
@@ -898,26 +906,18 @@ const RollerCoaster = () => {
   });
 
   return (
-    <group scale={0.7} position={[0, 1.5, -1.5]}>
+    <group ref={sceneRef} scale={0.7} position={[0, 1.5, -1.5]}>
       <mesh geometry={leftRailGeom}>
-        <meshStandardMaterial
-          color={RAIL_COLOR}
-          metalness={0.4}
-          roughness={0.5}
-        />
+        <meshBasicMaterial color={RAIL_COLOR} />
       </mesh>
       <mesh geometry={rightRailGeom}>
-        <meshStandardMaterial
-          color={RAIL_COLOR}
-          metalness={0.4}
-          roughness={0.5}
-        />
+        <meshBasicMaterial color={RAIL_COLOR} />
       </mesh>
 
       {sleepers.map((s, i) => (
         <mesh key={`tie-${i}`} position={s.position} quaternion={s.quaternion}>
           <boxGeometry args={[0.46, 0.04, 0.06]} />
-          <meshStandardMaterial color={TIE_COLOR} />
+          <meshBasicMaterial color={TIE_COLOR} />
         </mesh>
       ))}
 
@@ -999,20 +999,38 @@ export const AmusementParkScene = () => {
       camera={{ position: [0, 0, 6], fov: 50 }}
       gl={{ alpha: true, antialias: true }}
       dpr={[1, 2]}
+      shadows
       style={{ pointerEvents: "none" }}
     >
-      <ambientLight intensity={0.95} />
-      <directionalLight position={[5, 5, 5]} intensity={0.6} />
-      <directionalLight
-        position={[-5, 2, 3]}
-        intensity={0.25}
-        color="#FCA5A5"
+      <hemisphereLight
+        color="#FFE6E8"
+        groundColor="#F5C8CC"
+        intensity={0.55}
       />
       <directionalLight
-        position={[0, 4, -2]}
-        intensity={0.3}
-        color="#BAE6FD"
+        position={[6, 9, 5]}
+        intensity={1.3}
+        castShadow
+        shadow-mapSize={[2048, 2048]}
+        shadow-camera-near={0.1}
+        shadow-camera-far={30}
+        shadow-camera-left={-12}
+        shadow-camera-right={12}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
+        shadow-bias={-0.0005}
+        shadow-radius={4}
       />
+      <directionalLight position={[-4, 3, 2]} intensity={0.2} />
+
+      <mesh
+        position={[0, -2.5, -1]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        receiveShadow
+      >
+        <planeGeometry args={[40, 20]} />
+        <shadowMaterial opacity={0.25} />
+      </mesh>
 
       <Cloud x={-3} y={2.4} scale={1} />
       <Cloud x={3} y={2.6} scale={0.8} />

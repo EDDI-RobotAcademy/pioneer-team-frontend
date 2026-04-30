@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="ko" style={{ colorScheme: "light" }}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-amber-50 text-zinc-900 antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-[#FFF7F8] text-zinc-900 antialiased`}
       >
         <JotaiProvider>{children}</JotaiProvider>
       </body>
