@@ -8,10 +8,12 @@ import { BrandLogo } from "@/ui/components/BrandLogo";
 import type { Choice } from "@/features/quiz/domain/model/question";
 import { QuestionTemplate } from "@/features/quiz/ui/components/QuestionTemplate";
 import { useLandTracking } from "@/features/tracking/application/hooks/useLandTracking";
+import { useTracking } from "@/features/tracking/application/hooks/useTracking";
 import { ImpressionTracker } from "@/features/tracking/ui/components/ImpressionTracker";
 import {
   MBTI_INTRO_PAGE_CONTENT_ID,
   MBTI_INTRO_HERO_CONTENT_ID,
+  MBTI_INTRO_START_BUTTON_CONTENT_ID,
   mbtiQuestionContentId,
 } from "@/features/tracking/domain/contentId";
 
@@ -45,9 +47,16 @@ export const MbtiIntroPage = () => {
   } = useMbtiIntro();
 
   useLandTracking({ contentId: MBTI_INTRO_PAGE_CONTENT_ID });
+  const { trackClick } = useTracking();
+
+  const handleStartClick = () => {
+    trackClick(MBTI_INTRO_START_BUTTON_CONTENT_ID);
+    onStartTest();
+  };
 
   const handleSelectChoice = (choice: Choice) => {
     if (!currentQuestion) return;
+    trackClick(mbtiQuestionContentId(currentQuestion.id));
     onSelectChoice(currentQuestion.id, choice.id);
   };
 
@@ -158,7 +167,7 @@ export const MbtiIntroPage = () => {
         ) : (
           <ImpressionTracker contentId={MBTI_INTRO_HERO_CONTENT_ID}>
             <HeroImage>
-              <StartTestButton onStart={onStartTest} />
+              <StartTestButton onStart={handleStartClick} />
             </HeroImage>
           </ImpressionTracker>
         )}
