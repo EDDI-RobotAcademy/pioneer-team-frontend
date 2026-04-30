@@ -11,6 +11,10 @@ export const isAnsweringAtom = atom(
   (get) => get(introAtom).status === "ANSWERING",
 );
 
+export const isCompletedAtom = atom(
+  (get) => get(introAtom).status === "COMPLETED",
+);
+
 export const currentQuestionIndexAtom = atom((get) => {
   const state = get(introAtom);
   return state.status === "ANSWERING" ? state.currentIndex : -1;
@@ -24,7 +28,10 @@ export const currentQuestionAtom = atom((get) => {
 
 export const responsesAtom = atom<readonly Response[]>((get) => {
   const state = get(introAtom);
-  return state.status === "ANSWERING" ? state.responses : [];
+  if (state.status === "ANSWERING" || state.status === "COMPLETED") {
+    return state.responses;
+  }
+  return [];
 });
 
 export const totalQuestionCountAtom = atom(() => EMPATHY_QUESTIONS.length);

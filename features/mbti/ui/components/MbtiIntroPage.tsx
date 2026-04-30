@@ -11,13 +11,12 @@ import { useLandTracking } from "@/features/tracking/application/hooks/useLandTr
 import { useTracking } from "@/features/tracking/application/hooks/useTracking";
 import { ImpressionTracker } from "@/features/tracking/ui/components/ImpressionTracker";
 import {
-  MBTI_INTRO_PAGE_CONTENT_ID,
-  MBTI_INTRO_HERO_CONTENT_ID,
-  MBTI_INTRO_START_BUTTON_CONTENT_ID,
-  mbtiQuestionContentId,
+  CEO_TEST_PAGE_CONTENT_ID,
+  CEO_TEST_HERO_CONTENT_ID,
+  CEO_TEST_START_BUTTON_CONTENT_ID,
+  ceoTestQuestionContentId,
 } from "@/features/tracking/domain/contentId";
 import { MbtiResultSection } from "@/features/mbti/ui/components/MbtiResultSection";
-import { calcEmpathyType } from "@/features/mbti/domain/model/empathyResult";
 
 const AmusementParkScene = dynamic(
   () =>
@@ -41,29 +40,28 @@ export const MbtiIntroPage = () => {
   const {
     isIntroVisible,
     isAnswering,
+    isCompleted,
     currentQuestion,
     currentQuestionIndex,
     totalQuestionCount,
-    responses,
     onStartTest,
     onSelectChoice,
   } = useMbtiIntro();
 
-  useLandTracking({ contentId: MBTI_INTRO_PAGE_CONTENT_ID });
+  useLandTracking({ contentId: CEO_TEST_PAGE_CONTENT_ID });
   const { trackClick } = useTracking();
 
   const handleStartClick = () => {
-    trackClick(MBTI_INTRO_START_BUTTON_CONTENT_ID);
+    trackClick(CEO_TEST_START_BUTTON_CONTENT_ID);
     onStartTest();
   };
 
   const handleSelectChoice = (choice: Choice) => {
     if (!currentQuestion) return;
-    trackClick(mbtiQuestionContentId(currentQuestion.id));
     onSelectChoice(currentQuestion.id, choice.id);
   };
 
-  if (!isIntroVisible && !isAnswering) {
+  if (!isIntroVisible && !isAnswering && !isCompleted) {
     return null;
   }
 
@@ -141,32 +139,30 @@ export const MbtiIntroPage = () => {
       </header>
 
       <main className="relative mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-6 pb-6 sm:px-10">
-        {isAnswering ? (
-          currentQuestion ? (
-            <div className="flex w-full max-w-xl flex-col items-center gap-4">
-              <div className="flex items-center gap-2">
-                <span className="rounded-full bg-orange-400 px-4 py-1.5 text-xs font-bold text-white shadow-sm ring-2 ring-orange-200">
-                  {currentQuestion.category}
-                </span>
-                <span className="text-xs font-bold text-zinc-500">
-                  {currentQuestionIndex + 1} / {totalQuestionCount}
-                </span>
-              </div>
-              <ImpressionTracker
-                contentId={mbtiQuestionContentId(currentQuestion.id)}
-                className="w-full"
-              >
-                <QuestionTemplate
-                  question={currentQuestion}
-                  onSelect={handleSelectChoice}
-                />
-              </ImpressionTracker>
+        {isCompleted ? (
+          <MbtiResultSection />
+        ) : isAnswering && currentQuestion ? (
+          <div className="flex w-full max-w-xl flex-col items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-orange-400 px-4 py-1.5 text-xs font-bold text-white shadow-sm ring-2 ring-orange-200">
+                {currentQuestion.category}
+              </span>
+              <span className="text-xs font-bold text-zinc-500">
+                {currentQuestionIndex + 1} / {totalQuestionCount}
+              </span>
             </div>
-          ) : (
-            <MbtiResultSection empathyType={calcEmpathyType(responses)} />
-          )
+            <ImpressionTracker
+              contentId={ceoTestQuestionContentId(currentQuestion.id)}
+              className="w-full"
+            >
+              <QuestionTemplate
+                question={currentQuestion}
+                onSelect={handleSelectChoice}
+              />
+            </ImpressionTracker>
+          </div>
         ) : (
-          <ImpressionTracker contentId={MBTI_INTRO_HERO_CONTENT_ID}>
+          <ImpressionTracker contentId={CEO_TEST_HERO_CONTENT_ID}>
             <HeroImage>
               <StartTestButton onStart={handleStartClick} />
             </HeroImage>
