@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 type Tile = {
   ch: string;
   bg: string;
@@ -14,7 +16,7 @@ const TILES: ReadonlyArray<Tile> = [
 
 export const BrandLogo = () => {
   return (
-    <a
+    <Link
       href="/"
       aria-label="5늘 놀2 홈"
       className="inline-flex select-none items-center"
@@ -27,6 +29,6 @@ export const BrandLogo = () => {
           {tile.ch}
         </span>
       ))}
-    </a>
+    </Link>
   );
 };
