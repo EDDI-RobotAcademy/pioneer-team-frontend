@@ -26,7 +26,7 @@ const CityScene = dynamic(
   { ssr: false },
 );
 
-const HERO_IMAGE_SRC = "/images/serious/placeholder.png";
+const DEFAULT_HERO_IMAGE_SRC = "/images/ceo/ceo_type.png";
 const HERO_IMAGE_ALT = "심리 테스트 메인 이미지";
 
 type Props = {
@@ -101,15 +101,20 @@ export const SeriousTestPage = ({ test }: Props) => {
               )}
               className="w-full"
             >
-              <QuestionTemplate
-                question={currentQuestion}
-                onSelect={handleSelectChoice}
-              />
+              <div className="rounded-2xl bg-white/95 p-6 shadow-2xl ring-1 ring-zinc-200 backdrop-blur-sm">
+                <QuestionTemplate
+                  question={currentQuestion}
+                  onSelect={handleSelectChoice}
+                />
+              </div>
             </ImpressionTracker>
           </div>
         ) : (
           <ImpressionTracker contentId={heroContentId(test.contentId)}>
-            <SeriousHeroImage src={HERO_IMAGE_SRC} alt={HERO_IMAGE_ALT}>
+            <SeriousHeroImage
+              src={test.thumbnailPath ?? DEFAULT_HERO_IMAGE_SRC}
+              alt={HERO_IMAGE_ALT}
+            >
               <SeriousStartButton onStart={handleStartClick} />
             </SeriousHeroImage>
           </ImpressionTracker>
