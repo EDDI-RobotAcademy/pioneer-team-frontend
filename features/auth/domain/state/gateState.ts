@@ -6,7 +6,7 @@ export type LockedDetail = {
 export type GateState =
   | { status: "IDLE" }
   | { status: "LOCKED"; detail: LockedDetail }
-  | { status: "UNLOCKED"; token: string };
+  | { status: "UNLOCKED" };
 
 export const INITIAL_LOCKED_DETAIL: LockedDetail = {
   isSubmitting: false,

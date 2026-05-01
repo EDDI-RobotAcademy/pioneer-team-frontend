@@ -1,0 +1,87 @@
+"use client";
+
+import { useEffect } from "react";
+import { useFunnelMetrics } from "@/features/analytics/application/hooks/useFunnelMetrics";
+
+export const FunnelDashboard = () => {
+  const { state, refetch } = useFunnelMetrics();
+
+  useEffect(() => {
+    void refetch();
+  }, [refetch]);
+
+  return (
+    <div className="mx-auto max-w-3xl px-6 py-10">
+      <header className="flex items-center justify-between">
+        <h1 className="text-2xl font-black text-zinc-900">
+          이벤트 전환율 대시보드
+        </h1>
+        <button
+          type="button"
+          onClick={() => void refetch()}
+          disabled={state.status === "LOADING"}
+          className="rounded-md bg-zinc-100 px-4 py-2 text-sm font-bold text-zinc-700 transition-colors hover:bg-zinc-200 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          새로고침
+        </button>
+      </header>
+      <div className="mt-8">
+        {(state.status === "IDLE" || state.status === "LOADING") && (
+          <div className="rounded-2xl bg-white p-8 text-center text-sm text-zinc-500 ring-1 ring-zinc-200">
+            데이터를 불러오는 중...
+          </div>
+        )}
+        {state.status === "FAILED" && (
+          <div
+            role="alert"
+            className="rounded-2xl bg-rose-50 p-6 text-center ring-1 ring-rose-200"
+          >
+            <p className="text-sm font-bold text-rose-600">{state.reason}</p>
+            <button
+              type="button"
+              onClick={() => void refetch()}
+              className="mt-3 rounded-md bg-rose-600 px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-rose-700"
+            >
+              다시 시도
+            </button>
+          </div>
+        )}
+        {state.status === "SUCCESS" && (
+          <ul className="grid gap-3">
+            {state.data.stages.map((stage, index) => (
+              <li
+                key={`stage-${index}-${stage.event_type}`}
+                className="flex items-center justify-between rounded-xl bg-white p-4 ring-1 ring-zinc-200"
+              >
+                <span className="font-bold text-zinc-900">
+                  {stage.event_type}
+                </span>
+                <div className="flex gap-4 text-sm">
+                  <span className="font-mono text-zinc-700">
+                    {stage.count.toLocaleString()}
+                  </span>
+                  {typeof stage.conversion_rate === "number" && (
+                    <span className="font-mono text-indigo-600">
+                      {(stage.conversion_rate * 100).toFixed(1)}%
+                    </span>
+                  )}
+                </div>
+              </li>
+            ))}
+            {typeof state.data.overall_conversion_rate === "number" && (
+              <li
+                key="overall-conversion-rate"
+                className="flex items-center justify-between rounded-xl bg-indigo-50 p-4 ring-1 ring-indigo-200"
+              >
+                <span className="font-bold text-indigo-900">전체 전환율</span>
+                <span className="font-mono text-base font-black text-indigo-700">
+                  {(state.data.overall_conversion_rate * 100).toFixed(1)}%
+                </span>
+              </li>
+            )}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
