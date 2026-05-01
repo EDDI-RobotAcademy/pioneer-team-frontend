@@ -1,28 +1,27 @@
-const TOKEN_KEY = "auth.dashboard_gate_token";
+const VERIFIED_KEY = "auth.dashboard_verified";
 
-export const readGateToken = (): string | null => {
-  if (typeof window === "undefined") return null;
+export const readGateVerified = (): boolean => {
+  if (typeof window === "undefined") return false;
   try {
-    return window.sessionStorage.getItem(TOKEN_KEY);
+    return window.sessionStorage.getItem(VERIFIED_KEY) === "true";
   } catch {
-    return null;
+    return false;
   }
 };
 
-export const writeGateToken = (token: string): void => {
+export const writeGateVerified = (verified: boolean): void => {
   if (typeof window === "undefined") return;
   try {
-    window.sessionStorage.setItem(TOKEN_KEY, token);
+    if (verified) {
+      window.sessionStorage.setItem(VERIFIED_KEY, "true");
+    } else {
+      window.sessionStorage.removeItem(VERIFIED_KEY);
+    }
   } catch {
     /* noop */
   }
 };
 
-export const clearGateToken = (): void => {
-  if (typeof window === "undefined") return;
-  try {
-    window.sessionStorage.removeItem(TOKEN_KEY);
-  } catch {
-    /* noop */
-  }
+export const clearGateVerified = (): void => {
+  writeGateVerified(false);
 };

@@ -5,9 +5,9 @@ import { useCallback, useEffect } from "react";
 import { gateAtom } from "@/features/auth/application/atoms/gateAtom";
 import { INITIAL_LOCKED_DETAIL } from "@/features/auth/domain/state/gateState";
 import {
-  clearGateToken,
-  readGateToken,
-  writeGateToken,
+  clearGateVerified,
+  readGateVerified,
+  writeGateVerified,
 } from "@/features/auth/infrastructure/storage/gateStorage";
 import { verifyDashboardPassword } from "@/features/auth/infrastructure/api/gateApi";
 
@@ -21,10 +21,9 @@ export const useDashboardGate = () => {
 
   useEffect(() => {
     if (state.status !== "IDLE") return;
-    const token = readGateToken();
     setState(
-      token
-        ? { status: "UNLOCKED", token }
+      readGateVerified()
+        ? { status: "UNLOCKED" }
         : { status: "LOCKED", detail: INITIAL_LOCKED_DETAIL },
     );
   }, [state.status, setState]);
@@ -37,8 +36,8 @@ export const useDashboardGate = () => {
       });
       const result = await verifyDashboardPassword(password);
       if (result.success) {
-        writeGateToken(result.token);
-        setState({ status: "UNLOCKED", token: result.token });
+        writeGateVerified(true);
+        setState({ status: "UNLOCKED" });
         return;
       }
       setState({
@@ -53,7 +52,7 @@ export const useDashboardGate = () => {
   );
 
   const lock = useCallback(() => {
-    clearGateToken();
+    clearGateVerified();
     setState({ status: "LOCKED", detail: INITIAL_LOCKED_DETAIL });
   }, [setState]);
 
