@@ -46,10 +46,10 @@ export const SeriousTestPage = ({ test }: Props) => {
   } = usePsychTestRunner(test);
 
   useLandTracking({ contentId: test.contentId });
-  const { trackClick } = useTracking();
+  const { trackStart } = useTracking();
 
   const handleStartClick = () => {
-    trackClick(startButtonContentId(test.contentId));
+    trackStart(startButtonContentId(test.contentId));
     onStartTest();
   };
 

@@ -55,6 +55,7 @@ Optional 필드:
 
     IMPRESSION
     CLICK
+    START
     SCROLL
     CONVERT
     SHARE
@@ -63,7 +64,8 @@ Optional 필드:
 정의:
 
 - IMPRESSION: 콘텐츠가 화면에 노출됨
-- CLICK: 사용자가 콘텐츠를 클릭함
+- CLICK: 사용자가 콘텐츠를 클릭함 (일반 인터랙션)
+- START: 사용자가 테스트/플로우 시작 액션을 수행함 (시작 버튼 등)
 - SCROLL: 콘텐츠를 의미 있게 탐색함
 - CONVERT: 목표 행동 수행
 - SHARE: 공유 발생
