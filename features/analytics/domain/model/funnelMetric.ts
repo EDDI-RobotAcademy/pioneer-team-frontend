@@ -4,6 +4,8 @@ export type FunnelStageMetric = {
   event_type: FunnelEventType | string;
   count: number;
   conversion_rate?: number;
+  previous_count?: number;
+  delta_rate?: number | null;
 };
 
 export type FunnelMetricsResponse = {

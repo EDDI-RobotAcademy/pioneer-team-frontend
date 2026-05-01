@@ -1,7 +1,7 @@
 "use client";
 
-import { useDashboardGate } from "@/features/auth/application/hooks/useDashboardGate";
-import { PasswordGate } from "@/features/auth/ui/components/PasswordGate";
+import { useDashboardGate } from "@/features/analytics/application/hooks/useDashboardGate";
+import { PasswordGate } from "@/features/analytics/ui/components/PasswordGate";
 import { FunnelDashboard } from "@/features/analytics/ui/components/FunnelDashboard";
 
 export default function Page() {

@@ -53,6 +53,42 @@ const normalizeEventType = (raw: string | undefined | null): string =>
     .toUpperCase()
     .replace(/[\s-]+/g, "_");
 
+const DeltaIndicator = ({
+  deltaRate,
+}: {
+  deltaRate: number | null | undefined;
+}) => {
+  if (deltaRate === undefined) return null;
+
+  if (deltaRate === null) {
+    return (
+      <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-bold text-sky-700">
+        신규
+      </span>
+    );
+  }
+
+  if (deltaRate === 0) {
+    return (
+      <span className="font-mono text-xs font-bold text-zinc-500">
+        → 0.0%
+      </span>
+    );
+  }
+
+  const isUp = deltaRate > 0;
+  const sign = isUp ? "+" : "";
+  const arrow = isUp ? "↑" : "↓";
+  const colorClass = isUp ? "text-emerald-600" : "text-rose-600";
+
+  return (
+    <span className={`font-mono text-xs font-bold ${colorClass}`}>
+      {arrow} {sign}
+      {(deltaRate * 100).toFixed(1)}%
+    </span>
+  );
+};
+
 export const FunnelChart = ({ stages }: Props) => {
   if (isEmpty(stages)) {
     return <FunnelEmptyState />;
@@ -67,7 +103,10 @@ export const FunnelChart = ({ stages }: Props) => {
         <p className="mt-1 text-xs leading-5 text-zinc-500">
           사용자가 사이트에 진입한 뒤 결과까지 도달하는 흐름이에요. 우측의
           <span className="font-bold text-indigo-600"> %</span>는 직전 단계
-          대비 전환율을 의미합니다.
+          대비 전환율,
+          <span className="font-bold text-emerald-600"> ↑</span>/
+          <span className="font-bold text-rose-600">↓</span>는 직전 동일 기간
+          대비 증감입니다.
         </p>
       </div>
 
@@ -88,7 +127,7 @@ export const FunnelChart = ({ stages }: Props) => {
                   {String(stage.event_type ?? "(none)")}
                 </span>
               </div>
-              <div className="flex items-baseline gap-3 sm:gap-4">
+              <div className="flex items-baseline gap-2 sm:gap-3">
                 <span className="font-mono text-xs text-zinc-700 sm:text-sm">
                   {stage.count.toLocaleString()}
                   <span className="ml-0.5 text-zinc-400">회</span>
@@ -99,6 +138,7 @@ export const FunnelChart = ({ stages }: Props) => {
                     <span className="ml-0.5 text-indigo-400">%</span>
                   </span>
                 )}
+                <DeltaIndicator deltaRate={stage.delta_rate} />
               </div>
             </div>
             <div className="relative h-8 w-full overflow-hidden rounded-md bg-zinc-100 sm:h-10">
@@ -112,6 +152,11 @@ export const FunnelChart = ({ stages }: Props) => {
             </div>
             <p className="mt-1.5 text-xs leading-5 text-zinc-500">
               {label.description}
+              {typeof stage.previous_count === "number" && (
+                <span className="ml-2 text-zinc-400">
+                  · 직전 기간 {stage.previous_count.toLocaleString()}회
+                </span>
+              )}
             </p>
           </div>
         );
