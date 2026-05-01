@@ -4,6 +4,7 @@ import { useAtom, useAtomValue } from "jotai";
 import { useCallback } from "react";
 import { funnelAtom } from "@/features/analytics/application/atoms/funnelAtom";
 import { periodAtom } from "@/features/analytics/application/atoms/periodAtom";
+import { contentSelectionAtom } from "@/features/analytics/application/atoms/contentSelectionAtom";
 import { fetchFunnelMetrics } from "@/features/analytics/infrastructure/api/analyticsApi";
 
 const ERROR_MESSAGES = {
@@ -14,11 +15,12 @@ const ERROR_MESSAGES = {
 export const useFunnelMetrics = () => {
   const [state, setState] = useAtom(funnelAtom);
   const period = useAtomValue(periodAtom);
+  const content = useAtomValue(contentSelectionAtom);
 
   const refetch = useCallback(async (): Promise<void> => {
     setState({ status: "LOADING" });
     try {
-      const data = await fetchFunnelMetrics(period);
+      const data = await fetchFunnelMetrics(period, content);
       if (!data) {
         setState({ status: "FAILED", reason: ERROR_MESSAGES.EMPTY });
         return;
@@ -27,7 +29,7 @@ export const useFunnelMetrics = () => {
     } catch {
       setState({ status: "FAILED", reason: ERROR_MESSAGES.GENERIC });
     }
-  }, [setState, period]);
+  }, [setState, period, content]);
 
   return {
     state,

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useFunnelMetrics } from "@/features/analytics/application/hooks/useFunnelMetrics";
 import { FunnelChart } from "@/features/analytics/ui/components/FunnelChart";
 import { PeriodFilter } from "@/features/analytics/ui/components/PeriodFilter";
+import { ContentFilter } from "@/features/analytics/ui/components/ContentFilter";
 
 export const FunnelDashboard = () => {
   const { state, refetch } = useFunnelMetrics();
@@ -28,8 +29,15 @@ export const FunnelDashboard = () => {
         </button>
       </header>
 
-      <div className="mt-6">
-        <PeriodFilter />
+      <div className="mt-6 space-y-4">
+        <div>
+          <p className="mb-1.5 text-xs font-bold text-zinc-500">기간</p>
+          <PeriodFilter />
+        </div>
+        <div>
+          <p className="mb-1.5 text-xs font-bold text-zinc-500">콘텐츠</p>
+          <ContentFilter />
+        </div>
       </div>
 
       <section className="mt-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-zinc-200 sm:p-6">
