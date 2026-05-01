@@ -4,14 +4,21 @@ import { useDashboardGate } from "@/features/auth/application/hooks/useDashboard
 import { PasswordGate } from "@/features/auth/ui/components/PasswordGate";
 
 export default function Page() {
-  const { isChecking, isUnlocked, unlock } = useDashboardGate();
+  const { isChecking, isUnlocked, isSubmitting, errorMessage, submit } =
+    useDashboardGate();
 
-  if (isChecking) {
-    return null;
-  }
+  if (isChecking) return null;
 
   if (!isUnlocked) {
-    return <PasswordGate onSubmit={(password) => unlock(password)} />;
+    return (
+      <PasswordGate
+        onSubmit={(password) => {
+          void submit(password);
+        }}
+        isSubmitting={isSubmitting}
+        errorMessage={errorMessage ?? undefined}
+      />
+    );
   }
 
   return (
