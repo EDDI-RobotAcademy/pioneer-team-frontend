@@ -1,6 +1,7 @@
 export type EventType =
   | "IMPRESSION"
   | "CLICK"
+  | "START"
   | "SCROLL"
   | "CONVERT"
   | "SHARE"

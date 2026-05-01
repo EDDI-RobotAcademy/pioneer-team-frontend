@@ -9,16 +9,13 @@ type CommandMap = {
 };
 
 const commands: CommandMap = {
-  TRACK_CLICK: (intent) => {
-    sendTrackingEvent(
-      {
-        event_type: "CLICK",
-        session_id: ensureSessionId(),
-        content_id: intent.contentId,
-        timestamp: Date.now(),
-      },
-      { useBeacon: true },
-    );
+  TRACK_START: (intent) => {
+    sendTrackingEvent({
+      event_type: "START",
+      session_id: ensureSessionId(),
+      content_id: intent.contentId,
+      timestamp: Date.now(),
+    });
   },
   TRACK_CONVERT: (intent) => {
     sendTrackingEvent({

@@ -1,5 +1,5 @@
 export type TrackingIntent =
-  | { type: "TRACK_CLICK"; contentId: string }
+  | { type: "TRACK_START"; contentId: string }
   | {
       type: "TRACK_CONVERT";
       contentId: string;
