@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useFunnelMetrics } from "@/features/analytics/application/hooks/useFunnelMetrics";
 import { FunnelChart } from "@/features/analytics/ui/components/FunnelChart";
+import { PeriodFilter } from "@/features/analytics/ui/components/PeriodFilter";
 
 export const FunnelDashboard = () => {
   const { state, refetch } = useFunnelMetrics();
@@ -27,7 +28,11 @@ export const FunnelDashboard = () => {
         </button>
       </header>
 
-      <section className="mt-8 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-zinc-200 sm:p-6">
+      <div className="mt-6">
+        <PeriodFilter />
+      </div>
+
+      <section className="mt-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-zinc-200 sm:p-6">
         {(state.status === "IDLE" || state.status === "LOADING") && (
           <div className="py-12 text-center text-sm text-zinc-500">
             데이터를 불러오는 중...
