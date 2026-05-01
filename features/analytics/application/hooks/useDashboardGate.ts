@@ -2,14 +2,14 @@
 
 import { useAtom } from "jotai";
 import { useCallback, useEffect } from "react";
-import { gateAtom } from "@/features/auth/application/atoms/gateAtom";
-import { INITIAL_LOCKED_DETAIL } from "@/features/auth/domain/state/gateState";
+import { gateAtom } from "@/features/analytics/application/atoms/gateAtom";
+import { INITIAL_LOCKED_DETAIL } from "@/features/analytics/domain/state/gateState";
 import {
   clearGateVerified,
   readGateVerified,
   writeGateVerified,
-} from "@/features/auth/infrastructure/storage/gateStorage";
-import { verifyDashboardPassword } from "@/features/auth/infrastructure/api/gateApi";
+} from "@/features/analytics/infrastructure/storage/gateStorage";
+import { verifyDashboardPassword } from "@/features/analytics/infrastructure/api/gateApi";
 
 const ERROR_MESSAGES: Record<"WRONG_PASSWORD" | "NETWORK_ERROR", string> = {
   WRONG_PASSWORD: "비밀번호가 일치하지 않아요.",
