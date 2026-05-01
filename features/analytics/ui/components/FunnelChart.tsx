@@ -76,14 +76,6 @@ export const FunnelChart = ({ stages }: Props) => {
         const widthRatio = computeWidthRatio(stage.count, baseCount);
         const color = STAGE_COLORS[normalized] ?? STAGE_FALLBACK_COLOR;
         const label = STAGE_LABELS[normalized] ?? FALLBACK_LABEL;
-        const previous = index > 0 ? stages[index - 1] : null;
-        const stepRate =
-          stage.conversion_rate ??
-          (previous === null
-            ? 1
-            : previous.count > 0
-              ? stage.count / previous.count
-              : 0);
 
         return (
           <div key={`stage-${index}-${stage.event_type}`}>
@@ -101,10 +93,12 @@ export const FunnelChart = ({ stages }: Props) => {
                   {stage.count.toLocaleString()}
                   <span className="ml-0.5 text-zinc-400">회</span>
                 </span>
-                <span className="font-mono text-xs font-bold text-indigo-600 sm:text-sm">
-                  {(stepRate * 100).toFixed(1)}
-                  <span className="ml-0.5 text-indigo-400">%</span>
-                </span>
+                {typeof stage.conversion_rate === "number" && (
+                  <span className="font-mono text-xs font-bold text-indigo-600 sm:text-sm">
+                    {(stage.conversion_rate * 100).toFixed(1)}
+                    <span className="ml-0.5 text-indigo-400">%</span>
+                  </span>
+                )}
               </div>
             </div>
             <div className="relative h-8 w-full overflow-hidden rounded-md bg-zinc-100 sm:h-10">
